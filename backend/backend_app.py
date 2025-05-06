@@ -12,6 +12,12 @@ POSTS = [
 
 @app.route('/api/posts', methods=['GET', 'POST'])
 def get_posts():
+    """
+    GET: Returns a list of all blog posts.
+    POST: Creates a new post with provided JSON data ('title' and 'content').
+    Returns 400 if required fields are missing.
+    """
+
     if request.method == 'POST':
         try:
             data = request.get_json()
@@ -38,6 +44,11 @@ def get_posts():
 
 @app.route('/api/posts/<int:post_id>', methods=['DELETE'])
 def delete_post(post_id):
+    """
+    DELETE: Deletes the post with the given ID.
+    Returns 404 if the post is not found.
+    """
+
     try:
         for i, post in enumerate(POSTS):
             if post['id'] == post_id:
@@ -52,6 +63,12 @@ def delete_post(post_id):
 
 @app.route('/api/posts/<int:post_id>', methods=['PUT'])
 def update_post(post_id):
+    """
+    PUT: Updates the title and/or content of a post with the given ID.
+    Only provided fields will be updated.
+    Returns 404 if the post is not found.
+    """
+
     for post in POSTS:
         if post['id'] == post_id:
             data = request.get_json()
@@ -71,6 +88,12 @@ def update_post(post_id):
 
 @app.route('/api/posts/search', methods=['GET'])
 def search_posts():
+    """
+    GET: Searches posts by 'title' and/or 'content' query parameters.
+    Returns posts that contain the search term(s), case-insensitive.
+    Returns an empty list if no query is provided.
+    """
+
     searched_title = request.args.get('title')
     searched_content = request.args.get('content')
 
